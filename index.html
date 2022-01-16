@@ -78,6 +78,20 @@
                             <input v-model="order.zip" class="form-control" />
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="col-md-6 boxes">
+                            <input type="checkbox" id="gift" value="false" v-model="order.gift">
+                            <label for="gift">Ship As Gift?</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 boxes">
+                            <input type="radio" id="home" value="Home" v-model="order.method">
+                            <label for="home">Home</label>
+                            <input type="radio" id="business" value="Business" v-model="order.method">
+                            <label for="business">Business</label>
+                        </div>
+                    </div>
                     <div class="col-md-12 verify">
                         <pre>
                           First Name: {{order.firstName}}
@@ -86,6 +100,8 @@
                                 City: {{order.city}}
                                  Zip: {{order.zip}}
                                State: {{order.state}}
+                               Gift: {{order.gift}}
+                               Method: {{order.method}}
                         </pre>
                     </div>
                 </div>
@@ -116,7 +132,9 @@
                     address: '',
                     city: '',
                     zip: '',
-                    state: ''
+                    state: '',
+                    method: 'Home',
+                    gift: false
                 },
                 cart: []
             },
