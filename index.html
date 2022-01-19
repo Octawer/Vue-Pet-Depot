@@ -3,6 +3,7 @@
 <head>
     <title>Vue.js Pet Depot</title>
     <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js"></script>
     <link rel="stylesheet" type="text/css" href="assets/css/app.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
 </head>
@@ -127,6 +128,7 @@
             data: {
                 sitename: "Vue.js Pet Depot",
                 showProduct: true,
+                products: [],
                 product: {
                     id: 1001,
                     title: "Cat Food, 25lb bag",
@@ -208,6 +210,11 @@
                 if (APP_LOG_LIFECYCLE_EVENTS) {
                     console.log("created");
                 }
+
+                axios.get('./data/products.json').then((response) => {
+                    this.products = response.data.products;
+                    console.log(response.data.products);
+                })
             },
             beforeMount: function() {
                 if (APP_LOG_LIFECYCLE_EVENTS) {
