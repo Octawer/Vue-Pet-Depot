@@ -37,7 +37,9 @@
                         </p>
                         <button class="btn btn-primary btn-lg" v-on:click="addToCart" v-if="canAddToCart">Add to Cart</button>
                         <button class="btn btn-primary btn-lg disabled" v-else>Add to Cart</button>
-                        <span class="inventory-message" v-if="inventoryLow">Only {{itemsLeft}} left !!</span>
+                        <span class="inventory-message" v-if="itemsLeft === 0">Sold out !!</span>
+                        <span class="inventory-message" v-else-if="itemsLeft < 5">Only {{itemsLeft}} left !!</span>
+                        <span class="inventory-message" v-else>Buy now !!</span>
                     </div>
                 </div>
                 <div v-else>
@@ -129,7 +131,7 @@
                         " organic goodness for your cat.",
                     price: 2000,
                     image: "assets/images/product-fullsize.png",
-                    availableInventory: 5
+                    availableInventory: 10
                 },
                 order: {
                     firstName: '',
@@ -161,9 +163,6 @@
                 },
                 canAddToCart: function() {
                     return this.itemsLeft > 0;
-                },
-                inventoryLow: function() {
-                    return this.itemsLeft < 5 && this.itemsLeft > 0;
                 },
                 itemsLeft: function() {
                     return this.product.availableInventory - this.cartItemCount;
