@@ -40,6 +40,9 @@
                         <span class="inventory-message" v-if="itemsLeft === 0">Sold out !!</span>
                         <span class="inventory-message" v-else-if="itemsLeft < 5">Only {{itemsLeft}} left !!</span>
                         <span class="inventory-message" v-else>Buy now !!</span>
+                        <div class="rating">
+                            <span v-for="n in 5" v-bind:class="{'rating-active' : checkProductRating(n)}">☆</span>
+                        </div>
                     </div>
                 </div>
                 <div v-else>
@@ -131,7 +134,8 @@
                         " organic goodness for your cat.",
                     price: 2000,
                     image: "assets/images/product-fullsize.png",
-                    availableInventory: 10
+                    availableInventory: 10,
+                    rating: 3
                 },
                 order: {
                     firstName: '',
@@ -190,6 +194,9 @@
                 },
                 submitForm() {
                     alert('Submitted !!');
+                },
+                checkProductRating(rating) {
+                    return this.product.rating >= rating;
                 }
             },
             beforeCreate: function() {
