@@ -37,6 +37,7 @@
                         </p>
                         <button class="btn btn-primary btn-lg" v-on:click="addToCart" v-if="canAddToCart">Add to Cart</button>
                         <button class="btn btn-primary btn-lg disabled" v-else>Add to Cart</button>
+                        <span class="inventory-message" v-if="inventoryLow">Only {{itemsLeft}} left !!</span>
                     </div>
                 </div>
                 <div v-else>
@@ -159,7 +160,13 @@
                     return this.cart.length || '';
                 },
                 canAddToCart: function() {
-                    return this.product.availableInventory > this.cartItemCount;
+                    return this.itemsLeft > 0;
+                },
+                inventoryLow: function() {
+                    return this.itemsLeft < 5 && this.itemsLeft > 0;
+                },
+                itemsLeft: function() {
+                    return this.product.availableInventory - this.cartItemCount;
                 }
             },
             filters: {
