@@ -25,94 +25,101 @@
         <main>
             <div class="row product">
                 <div v-if="showProduct">
-                    <div class="col-md-2 col-md-offset-1">
-                        <figure>
-                            <img v-bind:src="product.image">
-                        </figure>
-                    </div>
-                    <div class="col-md-6 col-md-offset-2 description">
-                        <h1>{{ product.title }}</h1>
-                        <p v-html="product.description"></p>
-                        <p class="price">
-                            {{ product.price | formatPrice }}
-                        </p>
-                        <button class="btn btn-primary btn-lg" v-on:click="addToCart" v-if="canAddToCart">Add to Cart</button>
-                        <button class="btn btn-primary btn-lg disabled" v-else>Add to Cart</button>
-                        <span class="inventory-message" v-if="itemsLeft === 0">Sold out !!</span>
-                        <span class="inventory-message" v-else-if="itemsLeft < 5">Only {{itemsLeft}} left !!</span>
-                        <span class="inventory-message" v-else>Buy now !!</span>
-                        <div class="rating">
-                            <span v-for="n in 5" v-bind:class="{'rating-active' : checkProductRating(n)}">☆</span>
+                    <div v-for="product in products">
+                        <div class="row">
+                            <div class="col-md-5 col-md-offset-0">
+                                <figure>
+                                    <img class="product" v-bind:src="product.image">
+                                </figure>
+                            </div>
+                            <div class="col-md-6 col-md-offset-0 description">
+                                <h1>{{ product.title }}</h1>
+                                <p v-html="product.description"></p>
+                                <p class="price">
+                                    {{ product.price | formatPrice }}
+                                </p>
+                                <button class="btn btn-primary btn-lg" v-on:click="addToCart(product)" v-if="canAddToCart(product)">Add to Cart</button>
+                                <button class="btn btn-primary btn-lg disabled" v-else>Add to Cart</button>
+                                <span class="inventory-message" v-if="itemsLeft(product) === 0">Sold out !!</span>
+                                <span class="inventory-message" v-else-if="itemsLeft(product) < 5">Only {{itemsLeft(product)}} left !!</span>
+                                <span class="inventory-message" v-else>Buy now !!</span>
+                                <div class="rating">
+                                    <span v-for="n in 5" v-bind:class="{'rating-active' : checkProductRating(product, n)}">☆</span>
+                                </div>
+                            </div>
                         </div>
+                        <hr />
                     </div>
                 </div>
                 <div v-else>
-                    <div class="col-md-6">
-                        <strong>First Name:</strong>
-                        <input v-model.trim="order.firstName" class="form-control" />
-                    </div>
-                    <div class="col-md-6">
-                        <strong>Last Name:</strong>
-                        <input v-model.trim="order.lastName" class="form-control" /> //
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-12"><strong>Address:</strong></div>
-                        <div class="col-md-12">
-                            <input v-model.trim="order.address" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-12"><strong>City:</strong></div>
-                        <div class="col-md-12">
-                            <input v-model.trim="order.city" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-2">
-                            <strong>State:</strong>
-                            <select v-model="order.state" class="form-control">
-                                <option disabled value="">State</option>
-                                <option v-for="(state, key) in states" v-bind:value="state">
-                                    {{key}}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-6 col-md-offset-4">
-                            <strong>Zip / Postal Code:</strong>
-                            <input v-model.number="order.zip" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-6 boxes">
-                            <input type="checkbox" id="gift" value="false" v-bind:true-value="order.sendGift" v-bind:false-value="order.dontSendGift" v-model="order.gift">
-                            <label for="gift">Ship As Gift?</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-6 boxes">
-                            <input type="radio" id="home" v-bind:value="order.home" v-model="order.method">
-                            <label for="home">Home</label>
-                            <input type="radio" id="business" v-bind:value="order.business" v-model="order.method">
-                            <label for="business">Business</label>
-                        </div>
-                    </div>
-                    <div class="col-md-12 verify">
-                        <pre>
-                          First Name: {{order.firstName}}
-                           Last Name: {{order.lastName}}
-                             Address: {{order.address}}
-                                City: {{order.city}}
-                                 Zip: {{order.zip}}
-                               State: {{order.state}}
-                               Gift: {{order.gift}}
-                               Method: {{order.method}}
-                        </pre>
-                    </div>
-                    <div class="form-group">
+                    <div class="row">
                         <div class="col-md-6">
-                            <button type="submit" class="btn btn-primary submit" v-on:click="submitForm">Place Order</button>
+                            <strong>First Name:</strong>
+                            <input v-model.trim="order.firstName" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Last Name:</strong>
+                            <input v-model.trim="order.lastName" class="form-control" /> //
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12"><strong>Address:</strong></div>
+                            <div class="col-md-12">
+                                <input v-model.trim="order.address" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12"><strong>City:</strong></div>
+                            <div class="col-md-12">
+                                <input v-model.trim="order.city" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <strong>State:</strong>
+                                <select v-model="order.state" class="form-control">
+                                    <option disabled value="">State</option>
+                                    <option v-for="(state, key) in states" v-bind:value="state">
+                                        {{key}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <strong>Zip / Postal Code:</strong>
+                                <input v-model.number="order.zip" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 boxes">
+                                <input type="checkbox" id="gift" value="false" v-bind:true-value="order.sendGift" v-bind:false-value="order.dontSendGift" v-model="order.gift">
+                                <label for="gift">Ship As Gift?</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 boxes">
+                                <input type="radio" id="home" v-bind:value="order.home" v-model="order.method">
+                                <label for="home">Home</label>
+                                <input type="radio" id="business" v-bind:value="order.business" v-model="order.method">
+                                <label for="business">Business</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12 verify">
+                            <pre>
+                              First Name: {{order.firstName}}
+                               Last Name: {{order.lastName}}
+                                 Address: {{order.address}}
+                                    City: {{order.city}}
+                                     Zip: {{order.zip}}
+                                   State: {{order.state}}
+                                   Gift: {{order.gift}}
+                                   Method: {{order.method}}
+                            </pre>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-primary submit" v-on:click="submitForm">Place Order</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -129,16 +136,6 @@
                 sitename: "Vue.js Pet Depot",
                 showProduct: true,
                 products: [],
-                product: {
-                    id: 1001,
-                    title: "Cat Food, 25lb bag",
-                    description: "A 25 pound bag of <em>irresistible</em>," +
-                        " organic goodness for your cat.",
-                    price: 2000,
-                    image: "assets/images/product-fullsize.png",
-                    availableInventory: 10,
-                    rating: 3
-                },
                 order: {
                     firstName: '',
                     lastName: '',
@@ -166,12 +163,6 @@
             computed: {
                 cartItemCount: function() {
                     return this.cart.length || '';
-                },
-                canAddToCart: function() {
-                    return this.itemsLeft > 0;
-                },
-                itemsLeft: function() {
-                    return this.product.availableInventory - this.cartItemCount;
                 }
             },
             filters: {
@@ -188,8 +179,8 @@
                 }
             },
             methods: {
-                addToCart: function() {
-                    this.cart.push(this.product.id);
+                addToCart: function(product) {
+                    this.cart.push(product.id);
                 },
                 showCheckout() {
                     this.showProduct = this.showProduct ? false : true;
@@ -197,8 +188,17 @@
                 submitForm() {
                     alert('Submitted !!');
                 },
-                checkProductRating(rating) {
-                    return this.product.rating >= rating;
+                checkProductRating(product, rating) {
+                    return product.rating >= rating;
+                },
+                canAddToCart: function(product) {
+                    return this.itemsLeft(product) > 0;
+                },
+                itemsLeft: function(product) {
+                    return product.availableInventory - this.cartCount(product.id);
+                },
+                cartCount: function(productId) {
+                    return this.cart.filter(id => id === productId).length;
                 }
             },
             beforeCreate: function() {
